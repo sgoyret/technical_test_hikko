@@ -15,7 +15,8 @@ keyboard = [
     ]
 chat_ids = {}
 reply_markup = ReplyKeyboardMarkup(keyboard, is_persistent=True)
-
+TOKEN = ""
+API_KEY = ""
 
 # callback function for the /start command
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -40,7 +41,7 @@ async def weather(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text=f"Buscando clima para {update.effective_message.text}🔎")
 
     try:
-        response = requests.get(f"http://api.openweathermap.org/geo/1.0/direct?q={update.effective_message.text}&limit=1&appid=524aab097fad800100547ee28aba858f")
+        response = requests.get(f"http://api.openweathermap.org/geo/1.0/direct?q={update.effective_message.text}&limit=1&appid={API_KEY}")
 
         if response.status_code == 200:
             city_info = response.json()
@@ -52,7 +53,7 @@ async def weather(update: Update, context: ContextTypes.DEFAULT_TYPE):
             else:
                 response = requests.get(
                     f"https://api.openweathermap.org/data/2.5/weather?lat={city_info[0]['lat']}&"
-                    f"lon={city_info[0]['lon']}&appid=524aab097fad800100547ee28aba858f&units=metric&lang=es")
+                    f"lon={city_info[0]['lon']}&appid={API_KEY}&units=metric&lang=es")
                 city_weather = response.json()
 
                 await context.bot.send_message(chat_id=update.effective_chat.id,
@@ -105,7 +106,7 @@ def main() -> None:
     global chat_ids
     chat_ids = {}
 
-    application = Application.builder().token("7075659775:AAEnm5wFh2xjy9Hxoe5svfcS7-KhSJ1JZnQ").build()
+    application = Application.builder().token(TOKEN).build()
 
     application.add_handler(CommandHandler("start", start))
     application.add_handler(MessageHandler(filters.TEXT, text_handler))
