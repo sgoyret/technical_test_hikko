@@ -10,8 +10,8 @@ logging.basicConfig(
 )
 
 keyboard = [
-        [KeyboardButton("¡Quiero saber el Clima!")],
-        [KeyboardButton("¡Quiero Contar!")],
+        [KeyboardButton("¡Quiero saber el Clima!☀️")],
+        [KeyboardButton("¡Quiero Contar!🔢")],
     ]
 chat_ids = {}
 reply_markup = ReplyKeyboardMarkup(keyboard, is_persistent=True)
@@ -24,7 +24,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if chat_ids.get(update.effective_chat.id):
         chat_ids[update.effective_chat.id] = None
 
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="¡Hola! ¿Que Necesitas?",
+    await context.bot.send_message(chat_id=update.effective_chat.id, text="¡Hola! ¿Que Necesitas?☺️",
                                    reply_markup=reply_markup)
 
 
@@ -37,7 +37,7 @@ async def weather_city(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 # function for the weather city call to weatherAPI
 async def weather(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=update.effective_chat.id, text=f"Buscando clima para {update.effective_message.text}")
+    await context.bot.send_message(chat_id=update.effective_chat.id, text=f"Buscando clima para {update.effective_message.text}🔎")
 
     try:
         response = requests.get(f"http://api.openweathermap.org/geo/1.0/direct?q={update.effective_message.text}&limit=1&appid=524aab097fad800100547ee28aba858f")
@@ -88,9 +88,9 @@ async def count(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # text handlers
 async def text_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     text = update.effective_message.text
-    if text == "¡Quiero saber el Clima!":
+    if text == "¡Quiero saber el Clima!☀️":
         await weather_city(update, context)
-    elif text == "¡Quiero Contar!":
+    elif text == "¡Quiero Contar!🔢":
         await count(update, context)
     elif context.user_data.get("state") == "WEATHER":
         await weather(update, context)
